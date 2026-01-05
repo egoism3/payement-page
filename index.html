@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #000;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            color: #fff;
+        }
+
+        .bg-image {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.08;
+            z-index: 0;
+            filter: grayscale(100%);
+        }
+
+        .bg-image-1 {
+            animation: slideShow 20s infinite;
+        }
+
+        .bg-image-2 {
+            animation: slideShow 20s infinite;
+            animation-delay: 10s;
+        }
+
+        @keyframes slideShow {
+            0%, 45% { opacity: 0.08; }
+            50%, 95% { opacity: 0; }
+            100% { opacity: 0.08; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            margin-bottom: 80px;
+            opacity: 0.95;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .payment-card {
+            background: rgba(15, 15, 15, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+            padding: 35px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .payment-card:hover {
+            background: rgba(20, 20, 20, 0.9);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .payment-card:active {
+            transform: translateY(0);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            opacity: 0.9;
+        }
+
+        .card-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 400;
+            color: #fff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .card-address {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 12px 15px;
+            border-radius: 1px;
+            color: #888;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .card-conditions {
+            margin-bottom: 15px;
+        }
+
+        .condition-item {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .condition-item::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #444;
+        }
+
+        .card-hint {
+            text-align: center;
+            color: #444;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.95);
+            color: #fff;
+            padding: 15px 35px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1px;
+            opacity: 0;
+            transform: translate(-50%, -30px);
+            transition: all 0.4s ease;
+            z-index: 1000;
+            pointer-events: none;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .copy-notification.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 28px;
+                letter-spacing: 4px;
+                margin-bottom: 50px;
+            }
+            
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="https://images.guns.lol/b0d5f9e681ed3cf69d02c8635e83ca8960401af5/cLgQAS.jpg" 
+         alt="Background" 
+         class="bg-image bg-image-1">
+    <img src="https://images.guns.lol/b0d5f9e681ed3cf69d02c8635e83ca8960401af5/8V6Bgg.jpg" 
+         alt="Background" 
+         class="bg-image bg-image-2">
+
+    <div class="container">
+        <h1>TIBANA SHOP</h1>
+
+        <div class="payment-grid">
+            <!-- PayPal Card -->
+            <div class="payment-card" 
+                 onclick="window(open('https://paypal.me/lessiotibana', 'PayPal'))">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+                    </div>
+                    <div class="card-title">PayPal</div>
+                </div>
+                
+                <div class="card-address">paypal.me/lessiotibana</div>
+                
+                <div class="card-conditions">
+                    <div class="condition-item">Friends & Family only</div>
+                    <div class="condition-item">No Note</div>
+                    <div class="condition-item">Screenshot required</div>
+                </div>
+                
+                <div class="card-hint">Click to Open</div>
+            </div>
+
+            <!-- Litecoin Card -->
+            <div class="payment-card" 
+                 onclick="copyToClipboard('LTC1234567890abcdefghijklmnop', 'Litecoin')">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Litecoin.svg" alt="Litecoin">
+                    </div>
+                    <div class="card-title">Litecoin</div>
+                </div>
+                
+                <div class="card-address">LTC1234567890abcdefghijklmnop</div>
+                
+                <div class="card-conditions">
+                    <div class="condition-item">Screenshot required</div>
+                </div>
+                
+                <div class="card-hint">Click to copy</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-notification" id="notification">
+        Copied
+    </div>
+
+    <script>
+        function copyToClipboard(text, type) {
+            navigator.clipboard.writeText(text).then(function() {
+                showNotification(`${type} copied`);
+            }).catch(function(err) {
+                console.error('Copy error:', err);
+                showNotification('Copy failed');
+            });
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(function() {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
